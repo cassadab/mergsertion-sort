@@ -1,7 +1,5 @@
-import java.sql.SQLOutput;
-
 public class Sorter {
-    public static int[] insertionSort(int[] sequence) {
+    public int[] insertionSort(int[] sequence) {
         for(int i = 1; i < sequence.length; i++) {
             int key = sequence[i];
             int j = i - 1;
@@ -14,48 +12,61 @@ public class Sorter {
         return sequence;
     }
 
-    public static int[] mergeSort(int[] sequence, int p, int r) {
-        if (p < r) {
-            int q = (p + r) / 2;
+    private void merge(int sequence[], int start, int middle, int end) {
+        int n1 = middle - start + 1;
+        int n2 = end - middle;
 
-            mergeSort(sequence, p, q);
-            mergeSort(sequence, q + 1, r);
+        /* Create temp arrays */
+        int L[] = new int [n1];
+        int R[] = new int [n2];
 
-            merge(sequence, p, q, r);
-
+        /*Copy data to temp arrays*/
+        for (int i = 0; i<n1; i++) {
+            L[i] = sequence[start + i];
         }
-        return sequence;
-    }
-
-    private static void merge(int[] sequence, int p, int q, int r){
-        int n1 = q - p + 1;
-        int n2 = r - q;
-
-        int P[] = new int[n1];
-
-        int R[] = new int[n2];
-
-        for(int i = 0; i < n1; i++) {
-            P[i] = sequence[p + i];
+        for (int j = 0; j < n2; j++) {
+            R[j] = sequence[middle + 1 + j];
         }
-        for(int i = 0; i < n2; i++) {
-            R[i] = sequence[q + i];
-        }
-        printArray(R);
 
-        int i = 0, j = 0; // sub array "pointers"
+        int i = 0;
+        int j = 0;
 
-        int k = 1; // merged array pointer
-
-        while(i < n1 && j < n2) {
-            if (P[i] <= R[j]) {
-                sequence[k] = P[i];
+        int k = start;
+        while (i < n1 && j < n2) {
+            if (L[i] <= R[j]) {
+                sequence[k] = L[i];
                 i++;
             } else {
                 sequence[k] = R[j];
                 j++;
             }
             k++;
+        }
+
+        while (i < n1) {
+            sequence[k] = L[i];
+            i++;
+            k++;
+        }
+        while (j < n2) {
+            sequence[k] = R[j];
+            j++;
+            k++;
+        }
+    }
+
+    public void mergeSort(int arr[], int l, int r) {
+        if (l < r)
+        {
+            // Find the middle point
+            int m = (l+r)/2;
+
+            // Sort first and second halves
+            mergeSort(arr, l, m);
+            mergeSort(arr , m+1, r);
+
+            // Merge the sorted halves
+            merge(arr, l, m, r);
         }
     }
 
