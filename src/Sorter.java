@@ -1,9 +1,15 @@
 public class Sorter {
+
+    /**
+     * Sorts an array using the insertion sort algorithm
+     * @param sequence Array to be sorted
+     * @return A sorted array
+     */
     public int[] insertionSort(int[] sequence) {
-        for(int i = 1; i < sequence.length; i++) {
+        for (int i = 1; i < sequence.length; i++) {
             int key = sequence[i];
             int j = i - 1;
-            while(j >= 0 && sequence[j] > key) {
+            while (j >= 0 && sequence[j] > key) {
                 sequence[j + 1] = sequence[j];
                 j--;
             }
@@ -12,16 +18,21 @@ public class Sorter {
         return sequence;
     }
 
+    /**
+     * Method that actually carries out the merging process
+     * @param sequence Array to be merged
+     * @param start Starting index of array
+     * @param middle Middle index of array
+     * @param end Ending index of array
+     */
     private void merge(int sequence[], int start, int middle, int end) {
         int n1 = middle - start + 1;
         int n2 = end - middle;
 
-        /* Create temp arrays */
-        int L[] = new int [n1];
-        int R[] = new int [n2];
+        int L[] = new int[n1];
+        int R[] = new int[n2];
 
-        /*Copy data to temp arrays*/
-        for (int i = 0; i<n1; i++) {
+        for (int i = 0; i < n1; i++) {
             L[i] = sequence[start + i];
         }
         for (int j = 0; j < n2; j++) {
@@ -55,27 +66,44 @@ public class Sorter {
         }
     }
 
-    public void mergeSort(int arr[], int l, int r) {
-        if (l < r)
-        {
-            // Find the middle point
-            int m = (l+r)/2;
+    /**
+     * Recursive merge sort function
+     * @param sequence Array to be sorted
+     * @param start Starting index of array
+     * @param end Ending index of array
+     */
+    public void mergeSort(int sequence[], int start, int end) {
+        if (start < end) {
+            int mid = (start + end) / 2;
 
-            // Sort first and second halves
-            mergeSort(arr, l, m);
-            mergeSort(arr , m+1, r);
+            mergeSort(sequence, start, mid);
+            mergeSort(sequence, mid + 1, end);
 
-            // Merge the sorted halves
-            merge(arr, l, m, r);
+            merge(sequence, start, mid, end);
         }
     }
 
+    /**
+     * Combines merge and insertion sort, where appropriate
+     *
+     * @param sequence Array to be storted
+     * @param start Starting index of array
+     * @param end Ending index of array
+     */
+    public void mergeSertionSort(int sequence[], int start, int end) {
 
-    public static void printArray(int[] sequence) {
-        System.out.print("{ ");
-        for(int x: sequence) {
-            System.out.print(x + ", ");
+        if (sequence.length < 600) {
+            insertionSort(sequence);
+        } else {
+            if (start < end) {
+                int mid = (start + end) / 2;
+                mergeSertionSort(sequence, start, mid);
+                mergeSertionSort(sequence, mid + 1, end);
+                merge(sequence, start, mid, end);
+            }
         }
-        System.out.println("}");
     }
+
 }
+
+

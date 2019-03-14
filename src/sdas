@@ -1,0 +1,43 @@
+    public void mergeSort(int[] sequence, int start, int end) {
+        if (start < end) {
+            int mid = (start + end) / 2;
+            printArray(sequence);
+            mergeSort(sequence, start, mid);
+            mergeSort(sequence, mid + 1, end);
+
+            merge(sequence, start, mid, end);
+        }
+    }
+
+    private void merge(int[] sequence, int start, int mid, int end){
+        int n1 = mid - start + 1;
+        int n2 = end - mid;
+
+        int L[] = new int[n1];
+        int R[] = new int[n2];
+
+        for(int i = 0; i < n1; i++) {
+            L[i] = sequence[start + i - 1];
+        }
+        for(int j = 0; j < n2; j++) {
+            R[j] = sequence[mid + j];
+        }
+        System.out.println("L");
+        printArray(L);
+        System.out.println("R");
+        printArray(R);
+        int i = 0;
+        int j = 0; // sub array "pointers"
+        int k = 1; // merged array pointer
+
+        while(i < n1 && j < n2) {
+            if (L[i] <= R[j]) {
+                sequence[k] = L[i];
+                i++;
+            } else {
+                sequence[k] = R[j];
+                j++;
+            }
+            k++;
+        }
+    }
